@@ -3,22 +3,6 @@
 import GetKeys from "../Utils/GetKeys";
 
 /**
- * Tokenizes text into lowercase words, ignoring punctuation.
- */
-function Tokenize(text: string): string[] {
-	const tokens: string[] = [];
-	for (const [token] of text.lower().gmatch("%a+[%-%d']*%a*")) {
-		if (
-			typeIs(token, "number") ||
-			token.size() > 1 ||
-			token.match("%d")[0] !== undefined
-		)
-			tokens.push(tostring(token));
-	}
-	return tokens;
-}
-
-/**
  * Creates a term frequency map { word: count } from tokens.
  */
 function GetTermFrequency(tokens: string[]): Map<string, number> {
@@ -52,28 +36,28 @@ function TextToVector(
  * Computes cosine similarity between two vectors.
  * Returns 0-1 (1 = identical, 0 = no similarity).
  */
-function CosineSimilarity(vecA: number[], vecB: number[]): number {
-	if (vecA.size() !== vecB.size()) throw "Vector length mismatch";
+function CosineSimilarity(vec_a: number[], vec_b: number[]): number {
+	if (vec_a.size() !== vec_b.size()) throw "Vector length mismatch";
 
 	// Handle zero vectors
-	const mag_a = math.sqrt(vecA.reduce((sum, x) => sum + x * x, 0));
-	const mag_b = math.sqrt(vecB.reduce((sum, x) => sum + x * x, 0));
+	const mag_a = math.sqrt(vec_a.reduce((sum, x) => sum + x * x, 0));
+	const mag_b = math.sqrt(vec_b.reduce((sum, x) => sum + x * x, 0));
 	if (mag_a === 0 && mag_b === 0) return 1;
 	if (mag_a === 0 || mag_b === 0) return 0;
 
 	// Dot product calculation
-	const dot_product = vecA.reduce((sum, x, i) => sum + x * vecB[i], 0);
+	const dot_product = vec_a.reduce((sum, x, i) => sum + x * vec_b[i], 0);
 
 	return dot_product / (mag_a * mag_b);
 }
 
 // Main function
-export function CosineTextSimilarityScore(term: string, query: string): number {
-	const tokens_a = Tokenize(term);
-	const tokens_b = Tokenize(query);
-
-	const tf_a = GetTermFrequency(tokens_a);
-	const tf_b = GetTermFrequency(tokens_b);
+export function CosineTextSimilarityScore(
+	tokenized_term: string[],
+	tokenized_query: string[],
+): number {
+	const tf_a = GetTermFrequency(tokenized_term);
+	const tf_b = GetTermFrequency(tokenized_query);
 
 	const vocabulary = BuildVocabulary(tf_a, tf_b);
 	const vec_a = TextToVector(tf_a, vocabulary);
