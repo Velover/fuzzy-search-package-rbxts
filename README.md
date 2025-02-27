@@ -6,9 +6,9 @@ A comprehensive package providing fuzzy search algorithms and text processing ut
 
 - **`FuzzySearch.Scores`**: Core implementations of comparison algorithms (raw values)
 - **`FuzzySearch.Similarities`**: Normalized implementations (0-1 similarity scores)
-- `FuzzySearch.Transform`: Text preprocessing functions
-- `FuzzySearch.Tokenization`: String splitting utilities
-- `FuzzySearch.Sorting`: Ranking functions based on similarity metrics
+- **`FuzzySearch.Transform`**: Text preprocessing functions
+- **`FuzzySearch.Tokenization`**: String splitting utilities
+- **`FuzzySearch.Sorting`**: Ranking functions based on similarity metrics
 
 ## Algorithms
 
