@@ -1,22 +1,29 @@
 {
 	"name": "@rbxts/fuzzy-search",
 	"version": "1.0.0",
-	"main": "out/init.lua",
-	"scripts": {
-		"build": "rbxtsc --verbose",
-		"watch": "rbxtsc -w --verbose",
-		"prepublishOnly": "npm run build"
-	},
+	"description": "Fuzzy search allows you to find the results even with the spelling mistaces or approximate search words",
 	"keywords": [],
-	"author": "Catargo",
+	"homepage": "https://github.com/Velover/fuzzy-search-package#readme",
+	"bugs": {
+		"url": "https://github.com/Velover/fuzzy-search-package/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Velover/fuzzy-search-package.git"
+	},
 	"license": "MIT",
+	"author": "Catargo",
+	"type": "commonjs",
+	"main": "out/init.lua",
 	"types": "out/index.d.ts",
 	"files": [
 		"out",
 		"!**/*.tsbuildinfo"
 	],
-	"publishConfig": {
-		"access": "public"
+	"scripts": {
+		"build": "rbxtsc --verbose",
+		"watch": "rbxtsc -w --verbose",
+		"prepublishOnly": "npm run build"
 	},
 	"devDependencies": {
 		"@rbxts/compiler-types": "^3.0.0-types.0",
@@ -31,14 +38,7 @@
 		"roblox-ts": "^3.0.0",
 		"typescript": "^5.7.3"
 	},
-	"dependencies": {},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Velover/fuzzy-search-package.git"
-	},
-	"bugs": {
-		"url": "https://github.com/Velover/fuzzy-search-package/issues"
-	},
-	"homepage": "https://github.com/Velover/fuzzy-search-package#readme",
-	"description": "Fuzzy search allows you to find the results even with the spelling mistaces or approximate search words"
+	"publishConfig": {
+		"access": "public"
+	}
 }
