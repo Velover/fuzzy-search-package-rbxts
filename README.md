@@ -50,6 +50,8 @@ const desc2 = FuzzySearch.Tokenization.Word(
 const similarity = FuzzySearch.Scores.CosineTextSimilarity(desc1, desc2); // ~0.67
 ```
 
+---
+
 ### Damerau-Levenshtein
 
 Measures edit operations including transpositions. Great for OCR error correction.
@@ -89,6 +91,8 @@ FuzzySearch.Scores.DamerauLevenshteinDistance("apple", "appel"); // 1 (transposi
 FuzzySearch.Similarities.DamerauLevenshteinDistance("clasp", "claps"); // 0.8 (1 edit)
 ```
 
+---
+
 ### Fuzzy Score
 
 Default implementation for general-purpose fuzzy matching.
@@ -117,6 +121,8 @@ const results = FuzzySearch.Sorting.FuzzyScore(
 	"Phys",
 );
 ```
+
+---
 
 ### Hamming Distance
 
@@ -153,6 +159,8 @@ FuzzySearch.Scores.HammingDistance("GATACA", "GATTACA"); // 3 mismatches
 FuzzySearch.Scores.HammingDistance("AGCT", "AGTT"); // 1 mismatch
 ```
 
+---
+
 ### JaroWinkler
 
 Optimized for name matching and short strings.
@@ -178,6 +186,8 @@ Examples:
 FuzzySearch.Scores.JaroWinkler("shackleford", "shackelford"); // 0.98
 FuzzySearch.Scores.JaroWinkler("garbage", "gabrage"); // 0.92 (transposition handling)
 ```
+
+---
 
 ### Levenshtein Distance
 
@@ -210,6 +220,8 @@ FuzzySearch.Similarities.LevenshteinDistance("kitten", "sitting"); // 0.571 (3/7
 FuzzySearch.Sorting.LevenshteinDistance(["color", "colour", "colr"], "colour");
 // [ [0, "colour"], [1, "color"], [2, "colr"] ]
 ```
+
+---
 
 ### NGramCosine
 
@@ -245,6 +257,8 @@ const term2 = FuzzySearch.Tokenization.NGramCounts("holla", n);
 FuzzySearch.Scores.NGramCosine(term1, term2); // 0.4 (shared "he"/"ho" prefix)
 ```
 
+---
+
 ### NGramJaccard
 
 Calculates similarity using n-gram set intersections. Effective for quick presence/absence comparisons.
@@ -279,6 +293,8 @@ const set1 = FuzzySearch.Tokenization.NGramSet("Microsoft", n);
 const set2 = FuzzySearch.Tokenization.NGramSet("Microsystems", n);
 FuzzySearch.Scores.NGramJaccard(set1, set2); // 0.31 (shared "Mic", "cro", etc)
 ```
+
+---
 
 ## Tokenization
 
