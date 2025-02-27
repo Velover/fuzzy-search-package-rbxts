@@ -34,7 +34,7 @@ FuzzySearch.Sorting.CosineTextSimilarity(terms: string[], tokenized_terms: strin
 //tokenization
 const tokenized_term = FuzzySearch.Tokenization.Word(term);
 //Hello Wor'ld-and_this is128 big!1.0;
-//["Hello", "Wor", "ld", "and", "this", "is128", "big", "1", "0"]
+//["hello", "wor", "ld", "and", "this", "is128", "big", "1", "0"]
 ```
 
 Example:
@@ -47,7 +47,7 @@ const desc1 = FuzzySearch.Tokenization.Word(
 const desc2 = FuzzySearch.Tokenization.Word(
 	"Bluetooth 5.0 Wireless Earbuds with ANC",
 );
-const similarity = FuzzySearch.Scores.CosineTextSimilarity(desc1, desc2); // ~0.67
+const similarity = FuzzySearch.Scores.CosineTextSimilarity(desc1, desc2); // ~0.34
 ```
 
 ---
@@ -155,7 +155,7 @@ Example:
 
 ```ts
 // DNA sequence comparison
-FuzzySearch.Scores.HammingDistance("GATACA", "GATTACA"); // 3 mismatches
+FuzzySearch.Scores.HammingDistance("GATACA", "GATTACA"); // 4 mismatches
 FuzzySearch.Scores.HammingDistance("AGCT", "AGTT"); // 1 mismatch
 ```
 
@@ -184,7 +184,7 @@ Examples:
 
 ```ts
 FuzzySearch.Scores.JaroWinkler("shackleford", "shackelford"); // 0.98
-FuzzySearch.Scores.JaroWinkler("garbage", "gabrage"); // 0.92 (transposition handling)
+FuzzySearch.Scores.JaroWinkler("garbage", "gabrage"); // 0.96 (transposition handling)
 ```
 
 ---
@@ -254,7 +254,7 @@ Examples:
 const n = 2;
 const term1 = FuzzySearch.Tokenization.NGramCounts("hello", n);
 const term2 = FuzzySearch.Tokenization.NGramCounts("holla", n);
-FuzzySearch.Scores.NGramCosine(term1, term2); // 0.4 (shared "he"/"ho" prefix)
+FuzzySearch.Scores.NGramCosine(term1, term2); // 0.25 (shared "ll")
 ```
 
 ---
@@ -328,7 +328,7 @@ interface IWordTokenizationOptions {
 FuzzySearch.Tokenization.WordTo(text: string,	options?: IWordTokenizationOptions): string[]
 
 //Hello Wor'ld-and_this is128 big!1.0;
-//["Hello", "Wor", "ld", "and", "this", "is128", "big", "1", "0"]
+//["hello", "wor", "ld", "and", "this", "is128", "big", "1", "0"]
 ```
 
 ## Transform
