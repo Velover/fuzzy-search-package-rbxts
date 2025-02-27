@@ -19,8 +19,8 @@ export function NGramCosineScore(
 		a_magnitude += a_count ** 2;
 	});
 
-	b_grams.forEach((bCount) => {
-		b_magnitude += bCount ** 2;
+	b_grams.forEach((b_count) => {
+		b_magnitude += b_count ** 2;
 	});
 
 	const magnitude = math.sqrt(a_magnitude) * math.sqrt(b_magnitude);
