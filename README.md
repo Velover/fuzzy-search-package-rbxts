@@ -1,130 +1,331 @@
-Fuzzy search allows you to find the results even with spelling mistakes or approximate search words
+# FuzzySearch
 
-**[Roblox Test Place](<https://www.roblox.com/games/118296535262249/FuzzySearch-Test-Place>)**
+A comprehensive package providing fuzzy search algorithms and text processing utilities.
 
-# Searches
-- FuzzySearch.JaroWinkler
+## Namespaces
 
-... more prob will be added in the future
+- **`FuzzySearch.Scores`**: Core implementations of comparison algorithms (raw values)
+- **`FuzzySearch.Similarities`**: Normalized implementations (0-1 similarity scores)
+- `FuzzySearch.Transform`: Text preprocessing functions
+- `FuzzySearch.Tokenization`: String splitting utilities
+- `FuzzySearch.Sorting`: Ranking functions based on similarity metrics
 
-## JaroWinkler
+## Algorithms
+
+### CosineTextSimilarity
+
+Calculates cosine similarity between tokenized strings. Ideal for document comparison.
+
+**Input:**  
+`"Hello World"` vs `"Hello Earth"`  
+**Tokenization:**  
+`["Hello", "World"]` vs `["Hello", "Earth"]`  
+**Similarity:** ~0.5 (shared term "Hello", different terms "World"/"Earth")
+
+Declarations:
+
+```ts
+FuzzySearch.Scores.CosineTextSimilarity(tokenized_term: string[], tokenized_query: string[]): number;
+
+
+/**higher - better */
+FuzzySearch.Sorting.CosineTextSimilarity(terms: string[], tokenized_terms: string[][], tokenized_query: string[]): [number, string][]
+
+//tokenization
+const tokenized_term = FuzzySearch.Tokenization.Word(term);
+//Hello Wor'ld-and_this is128 big!1.0;
+//["Hello", "Wor", "ld", "and", "this", "is128", "big", "1", "0"]
+```
+
+Example:
+
+```ts
+// Comparing product descriptions
+const desc1 = FuzzySearch.Tokenization.Word(
+	"Wireless Bluetooth Headphones Noise-Canceling",
+);
+const desc2 = FuzzySearch.Tokenization.Word(
+	"Bluetooth 5.0 Wireless Earbuds with ANC",
+);
+const similarity = FuzzySearch.Scores.CosineTextSimilarity(desc1, desc2); // ~0.67
+```
+
+### Damerau-Levenshtein
+
+Measures edit operations including transpositions. Great for OCR error correction.
+
+**Input:**  
+`"Thursday"` vs `"Thrusday"`  
+**Distance:** 1 (single transposition r↔u)  
+**Operations:** Transpose 'r' and 'u'
+
+Declarations:
+
+```ts
+// Basic implementation
+FuzzySearch.Scores.DamerauLevenshteinDistance(term: string, query: string): number;
+// Optimized for large strings
+FuzzySearch.Scores.LargeStringsDamerauLevenshteinDistance(term: string,	query: string): number;
+
+// Similarity versions (0-1)
+FuzzySearch.Similarities.DamerauLevenshteinDistance(term: string,	query: string): number;
+FuzzySearch.Similarities.LargeStringsDamerauLevenshteinDistance(term: string,	query: string): number;
+
+
+/**lower - better */
+FuzzySearch.Sorting.DamerauLevenshteinDistance(terms: string[],	query: string): [number, string][];
+/**lower - better */
+FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistance(terms: string[],	query: string): [number, string][];
+/**higher - better */
+FuzzySearch.Sorting.DamerauLevenshteinSimilarity(terms: string[],	query: string): [number, string][];
+/**higher - better */
+FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistanceSimilarity(terms: string[],	query: string): [number, string][];
+```
+
+Example:
+
+```ts
+FuzzySearch.Scores.DamerauLevenshteinDistance("apple", "appel"); // 1 (transposition)
+FuzzySearch.Similarities.DamerauLevenshteinDistance("clasp", "claps"); // 0.8 (1 edit)
+```
+
+### Fuzzy Score
+
+Default implementation for general-purpose fuzzy matching.
+
+**Input:**  
+`"fuzzywuzzy"` vs `"fuzzy"`  
+**Score:** High (exact initial match + continuation)  
+**Use Case:** Partial match scoring in search boxes
+
+Declarations:
+
+```ts
+FuzzySearch.Scores.FuzzyScore(term: string, query: string): number;
+
+
+/**higher - better */
+FuzzySearch.Sorting.FuzzyScore(terms: string[],	query: string): [number, string][];
+```
+
+Example:
+
+```ts
+// Search box implementation
+const results = FuzzySearch.Sorting.FuzzyScore(
+	["Astrophysics", "Particle Physics", "Quantum Mechanics"],
+	"Phys",
+);
+```
+
+### Hamming Distance
+
+Compares same-length strings. Ideal for error-correcting codes.
+
+**Input:**  
+`"karolin"` vs `"kathrin"` (equal length)  
+**Distance:** 3  
+**Differences:** Positions 3(r≠t), 4(o≠h), 6(i≠r)
+
+Declarations:
+
+```ts
+FuzzySearch.Scores.HammingDistance(term: string, query: string): number;
+
+
+FuzzySearch.Similarities.HammingDistance(term: string, query: string): number;
+FuzzySearch.Similarities.HammingLevenshteinHybrid(term: string,	query: string): number;
+
+
+/**lower - better */
+FuzzySearch.Sorting.HammingDistance(terms: string[], query: string): [number, string][];
+/**higher - better */
+FuzzySearch.Sorting.HammingDistanceSimilarity(terms: string[], query: string): [number, string][];
+/**higher - better */
+FuzzySearch.Sorting.HammingLevenshteinHybridSimilarity(terms: string[], query: string): [number, string][];
+```
+
+Example:
+
+```ts
+// DNA sequence comparison
+FuzzySearch.Scores.HammingDistance("GATACA", "GATTACA"); // 3 mismatches
+FuzzySearch.Scores.HammingDistance("AGCT", "AGTT"); // 1 mismatch
+```
 
 ### JaroWinkler
-evaluates how relevant is the string to the search keywords
-```ts
-const search_keywords = "app";
-const string_value = "apple";
-const case_sensitive = false; //@default true;
 
-const value: number = FuzzySearch.JaroWinkler.JaroWinkler(
-  search_keywords,
-  string_value,
-  case_sensitive
-)
+Optimized for name matching and short strings.
+
+**Input:**  
+`"Martha"` vs `"Marhta"`  
+**Similarity:** 0.961 (vs 0.944 in plain Jaro)  
+**Benefit:** Prefix bonus for "Mar" match
+
+Declarations:
+
+```ts
+FuzzySearch.Scores.JaroWinkler(term: string, query: string, case_sensitive: boolean = true): number;
+
+
+/**higher - better */
+FuzzySearch.Sorting.JaroWinkler(terms: string[], query: string): [number, string][];
 ```
 
-### SortStrings
-sorts the array of strings by the value from JaroWinkler
+Examples:
 
-@min_value - [0, 1]: 0 - not relevant, 1 - exact match
-
-if bigger than 0, will filter out values with the score less than min_value
 ```ts
-const search_keywords = "pnapp";
-const data = ["apple", "banana", "Apple", "pinapple", "Git hub search bar"];
-const min_value = 0.05; //@default 0
-const case_sensitive = true; //@default true
-const results: string[] = FuzzySearch.JaroWinkler.SortStrings(
-  search_keywords,
-  data,
-  case_sensitive,
-  min_value
- )
-//{
-//   [1] = "pinapple",
-//   [2] = "Apple",
-//   [3] = "apple",
-//   [4] = "banana"
-// }
+FuzzySearch.Scores.JaroWinkler("shackleford", "shackelford"); // 0.98
+FuzzySearch.Scores.JaroWinkler("garbage", "gabrage"); // 0.92 (transposition handling)
 ```
 
-### SortObjects
-sorts the array of objects by the value from JaroWinkler
+### Levenshtein Distance
 
-@min_value - [0, 1]: 0 - not relevant, 1 - exact match
+Classic edit distance algorithm. Good for general typo detection.
 
-if bigger than 0, will filter out values with the score less than min_value
+**Input:**  
+`"kitten"` vs `"sitting"`  
+**Operations:** 3 edits  
+k→s (substitution), e→i (substitution), +g (insertion)
+
+Declarations:
+
 ```ts
-const search_keywords = "pnapp";
-interface IObject {
-	Name: string;
+FuzzySearch.Scores.LevenshteinDistance(term: string, query: string): number;
+
+
+FuzzySearch.Similarities.LevenshteinDistance(term: string, query: string): number;
+
+
+/**lower - better */
+FuzzySearch.Sorting.LevenshteinDistance(terms: string[], query: string): [number, string][];
+/**higher - better */
+FuzzySearch.Sorting.LevenshteinDistanceSimilarity(terms: string[], query: string): [number, string][];
+```
+
+Examples:
+
+```ts
+FuzzySearch.Similarities.LevenshteinDistance("kitten", "sitting"); // 0.571 (3/7 edits)
+FuzzySearch.Sorting.LevenshteinDistance(["color", "colour", "colr"], "colour");
+// [ [0, "colour"], [1, "color"], [2, "colr"] ]
+```
+
+### NGramCosine
+
+Calculates cosine similarity using n-gram frequency vectors. Ideal for comparing documents by content structure.
+
+**Input:**  
+`"The quick"` vs `"Quick brown"` (n=3)  
+**Trigrams:**  
+`["The", "he ", "e q", " qu", ...]` vs `["Qui", "uic", "ick", ...]`  
+**Similarity:** Low - different n-gram sets
+
+Declarations:
+
+```ts
+FuzzySearch.Scores.NGramCosine(n_gram_counts_tokenized_term: Map<string, number>,	n_gram_counts_tokenized_query: Map<string, number>): number;
+
+/**higher - better */
+FuzzySearch.Sorting.NGramCosineSorting(terms: string[],	n_gram_count_tokenized_terms: Map<string, number>[],	n_gram_count_tokenized_query: Map<string, number>): [number, string][];
+
+
+//tokenization
+const n_gram_counts_tokenized_term = FuzzySearch.Tokenization.NGramCountsTokenization(term, n);
+//Hello World!  n = 3
+//["Hel", "ell", "llo", "lo ", "o W", " Wo", "Wor", "orl", "rld", "ld!"];
+```
+
+Examples:
+
+```ts
+const n = 2;
+const term1 = FuzzySearch.Tokenization.NGramCounts("hello", n);
+const term2 = FuzzySearch.Tokenization.NGramCounts("holla", n);
+FuzzySearch.Scores.NGramCosine(term1, term2); // 0.4 (shared "he"/"ho" prefix)
+```
+
+### NGramJaccard
+
+Calculates similarity using n-gram set intersections. Effective for quick presence/absence comparisons.
+
+**Input:**  
+`"night"` vs `"nacht"` (n=2)  
+**Bigrams:**  
+`{"ni", "ig", "gh", "ht"} vs {"na", "ac", "ch", "ht"}`  
+**Similarity:** 0.14 (1 shared "ht" / 7 total)
+
+Declarations:
+
+```ts
+FuzzySearch.Scores.NGramJaccard(n_gram_set_tokenized_term: Set<string>,	n_gram_set_tokenized_query: Set<string>): number;
+
+
+/**higher - better */
+FuzzySearch.Sorting.NGramJaccard(terms: string[],	n_gram_set_tokenized_terms: Set<string>[], n_gram_set_tokenized_query: Set<string>): [number, string][] ;
+
+//tokenization
+const n_gram_counts_tokenized_term = FuzzySearch.Tokenization.NGramSetTokenization(term, n);
+//Hello World!  n = 3
+//["Hel", "ell", "llo", "lo ", "o W", " Wo", "Wor", "orl", "rld", "ld!"];
+
+```
+
+Examples:
+
+```ts
+const n = 3;
+const set1 = FuzzySearch.Tokenization.NGramSet("Microsoft", n);
+const set2 = FuzzySearch.Tokenization.NGramSet("Microsystems", n);
+FuzzySearch.Scores.NGramJaccard(set1, set2); // 0.31 (shared "Mic", "cro", etc)
+```
+
+## Tokenization
+
+### NGram
+
+Declarations:
+
+```ts
+//Hello World!  n = 3
+//["Hel", "ell", "llo", "lo ", "o W", " Wo", "Wor", "orl", "rld", "ld!"];
+FuzzySearch.Tokenization.NGram(text: string, n: number): string[];
+
+//used for NGramJaccard
+FuzzySearch.Tokenization.NGramSet(str: string, n: number): Set<string>
+//used for NGramCosine
+FuzzySearch.Tokenization.NGramCounts(str: string,	n: number): Map<string, number>;
+```
+
+### Word
+
+Tokenizes text into lowercase words, ignoring punctuation.
+Has various options
+
+Declaration:
+
+```ts
+interface IWordTokenizationOptions {
+	PreserveAccents?: boolean;
+	PreserveHyphens?: boolean;
 }
-const data: IObject[] = [
-	{ Name: "apple" },
-	{ Name: "banana" },
-	{ Name: "Apple" },
-	{ Name: "pinapple" },
-	{ Name: "Git hub search bar" },
-];
-const min_value = 0.05; //@default 0
-const NameSelector = (value: IObject) => value.Name;
-const case_sensitive = true; //@default true
-const results: IObject[] = FuzzySearch.JaroWinkler.SortObjects(
-	search_keywords,
-	data,
-	NameSelector,
-	case_sensitive,
-	min_value,
-);
-print(results);
-//{
-//   [1] = {Name: "pinapple"},
-//   [2] = {Name: "Apple"},
-//   [3] = {Name: "apple"},
-//   [4] = {Name: "banana"}
-// }
+FuzzySearch.Tokenization.WordTo(text: string,	options?: IWordTokenizationOptions): string[]
+
+//Hello Wor'ld-and_this is128 big!1.0;
+//["Hello", "Wor", "ld", "and", "this", "is128", "big", "1", "0"]
 ```
 
-### GetBestResultObject
-finds the best match for search keywords for objects
+## Transform
+
+### Soundex
+
+Phonetic encoding for name matching:
+
+Declarations:
+
 ```ts
-const search_keywords = "pnapp";
-
-interface IObject {
-	Name: string;
-}
-const data = [
-	{ Name: "apple" },
-	{ Name: "banana" },
-	{ Name: "Apple" },
-	{ Name: "pinapple" },
-	{ Name: "Git hub search bar" },
-];
-const NameSelector = (value: IObject) => value.Name;
-const case_sensitive = true; //@default true
-const result: IObject = FuzzySearch.JaroWinkler.GetBestResultObject(
-	search_keywords,
-	data,
-	NameSelector,
-	case_sensitive,
-);
-print(result);
-
-//{Name: "pinapple"},
-```
-
-### GetBestResultString
-finds the best match for search keywords for strings
-```ts
-const search_keywords = "pnapp";
-const data = ["apple", "banana", "Apple", "pinapple", "Git hub search bar"];
-const case_sensitive = true; //@default true
-const result: string = FuzzySearch.JaroWinkler.GetBestResultString(
-	search_keywords,
-	data,
-	case_sensitive,
-);
-print(result);
-
-//"pinapple",
+FuzzySearch.Transform.SoundexTransform(input: string): string;
+//Robert = Rupert -> R163
+//Ashcraft = Ashcroft -> A261
+//Howard = Hayward = Hardy -> H630
 ```
