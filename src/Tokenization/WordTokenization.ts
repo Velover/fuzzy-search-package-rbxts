@@ -1,3 +1,5 @@
+//!native
+//!optimize 2
 interface IWordTokenizationOptions {
 	preserve_accents?: boolean;
 	preserve_hyphens?: boolean;

@@ -1,3 +1,5 @@
+//!native
+//!optimize 2
 import SubString from "../Utils/SubString";
 
 export function NGramTokenization(text: string, n: number): string[] {

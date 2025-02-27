@@ -1,27 +1,12 @@
 //!native
 //!optimize 2
-import SubString from "../Utils/SubString";
-
-/**
- * Generates a Set of unique n-grams from a string.
- * @example "apple" → {"app", "ppl", "ple"} (n=3)
- */
-function GenerateNGramsSet(str: string, n: number): Set<string> {
-	const n_grams = new Set<string>();
-	for (let i = 0; i <= str.size() - n; i++) {
-		n_grams.add(SubString(str, i, i + n));
-	}
-	return n_grams;
-}
 
 export function NGramJaccardScore(
-	term: string,
-	query: string,
-	n: number,
+	n_gram_set_tokenized_term: Set<string>,
+	n_gram_set_tokenized_query: Set<string>,
 ): number {
-	if (n < 1) throw "n must be ≥ 1";
-	const a_grams = GenerateNGramsSet(term, n);
-	const b_grams = GenerateNGramsSet(query, n);
+	const a_grams = n_gram_set_tokenized_term;
+	const b_grams = n_gram_set_tokenized_query;
 
 	if (a_grams.size() === 0 && b_grams.size() === 0) return 1; // Both empty
 

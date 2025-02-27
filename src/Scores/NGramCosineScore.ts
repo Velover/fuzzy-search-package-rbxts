@@ -1,28 +1,12 @@
 //!native
 //!optimize 2
-import SubString from "../Utils/SubString";
-
-/**
- * Generates a Map of n-grams with their frequencies.
- * @example "apple" → {"app":1, "ppl":1, "ple":1} (n=3)
- */
-function GenerateNGramsCounts(str: string, n: number): Map<string, number> {
-	const counts = new Map<string, number>();
-	for (let i = 0; i <= str.size() - n; i++) {
-		const gram = SubString(str, i, i + n);
-		counts.set(gram, (counts.get(gram) ?? 0) + 1);
-	}
-	return counts;
-}
 
 export function NGramCosineScore(
-	term: string,
-	query: string,
-	n: number,
+	n_gram_counts_tokenized_term: Map<string, number>,
+	n_gram_counts_tokenized_query: Map<string, number>,
 ): number {
-	if (n < 1) throw "n must be ≥ 1";
-	const a_grams = GenerateNGramsCounts(term, n);
-	const b_grams = GenerateNGramsCounts(query, n);
+	const a_grams = n_gram_counts_tokenized_term;
+	const b_grams = n_gram_counts_tokenized_query;
 
 	let dot_product = 0;
 	let a_magnitude = 0;
