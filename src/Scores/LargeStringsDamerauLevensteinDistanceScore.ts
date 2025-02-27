@@ -6,8 +6,9 @@ export function LargeStringsDamerauLevenshteinDistanceScore(
 	term: string,
 	query: string,
 ): number {
-	const m = term.size(),
-		n = query.size();
+	const m = term.size();
+	const n = query.size();
+
 	if (m === 0) return n;
 	if (n === 0) return m;
 
