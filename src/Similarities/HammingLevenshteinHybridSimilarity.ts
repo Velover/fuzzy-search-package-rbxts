@@ -7,7 +7,7 @@ import { LevenshteinDistanceSimilarity } from "./LevenshteinDistanceSimilarity";
 export function HammingLevenshteinHybridSimilarity(
 	term: string,
 	query: string,
-) {
+): number {
 	return (
 		(HammingDistanceSimilarity(term, query) +
 			LevenshteinDistanceSimilarity(term, query)) /

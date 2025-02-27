@@ -4,7 +4,7 @@
 import { Scores } from "../Scores";
 
 /**higher - better */
-export function CosineSimilaritySorting(
+export function CosineTextSimilaritySorting(
 	terms: string[],
 	tokenized_terms: string[][],
 	tokenized_query: string[],
