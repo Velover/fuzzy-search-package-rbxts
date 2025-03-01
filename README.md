@@ -29,7 +29,7 @@ FuzzySearch.Scores.CosineTextSimilarity(tokenized_term: string[], tokenized_quer
 
 
 /**higher - better */
-FuzzySearch.Sorting.CosineTextSimilarity(terms: string[], tokenized_terms: string[][], tokenized_query: string[]): [number, string][]
+FuzzySearch.Sorting.CosineTextSimilarity(output_terms: string[], tokenized_terms: string[][], tokenized_query: string[]): [number, string][]
 
 //tokenization
 const tokenized_term = FuzzySearch.Tokenization.Word(term);
@@ -75,13 +75,13 @@ FuzzySearch.Similarities.LargeStringsDamerauLevenshteinDistance(term: string, qu
 
 
 /**lower - better */
-FuzzySearch.Sorting.DamerauLevenshteinDistance(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.DamerauLevenshteinDistance(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 /**lower - better */
-FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistance(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistance(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 /**higher - better */
-FuzzySearch.Sorting.DamerauLevenshteinDistanceSimilarity(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.DamerauLevenshteinDistanceSimilarity(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 /**higher - better */
-FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistanceSimilarity(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistanceSimilarity(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 ```
 
 Example:
@@ -109,7 +109,7 @@ FuzzySearch.Scores.FuzzyScore(term: string, query: string): number;
 
 
 /**higher - better */
-FuzzySearch.Sorting.FuzzyScore(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.FuzzyScore(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 ```
 
 Example:
@@ -144,11 +144,11 @@ FuzzySearch.Similarities.HammingLevenshteinHybrid(term: string, query: string): 
 
 
 /**lower - better */
-FuzzySearch.Sorting.HammingDistance(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.HammingDistance(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 /**higher - better */
-FuzzySearch.Sorting.HammingDistanceSimilarity(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.HammingDistanceSimilarity(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 /**higher - better */
-FuzzySearch.Sorting.HammingLevenshteinHybridSimilarity(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.HammingLevenshteinHybridSimilarity(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 ```
 
 Example:
@@ -177,7 +177,7 @@ FuzzySearch.Scores.JaroWinkler(term: string, query: string, case_sensitive: bool
 
 
 /**higher - better */
-FuzzySearch.Sorting.JaroWinkler(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.JaroWinkler(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 ```
 
 Examples:
@@ -208,9 +208,9 @@ FuzzySearch.Similarities.LevenshteinDistance(term: string, query: string): numbe
 
 
 /**lower - better */
-FuzzySearch.Sorting.LevenshteinDistance(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.LevenshteinDistance(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 /**higher - better */
-FuzzySearch.Sorting.LevenshteinDistanceSimilarity(terms: string[], query: string): [number, string][];
+FuzzySearch.Sorting.LevenshteinDistanceSimilarity(terms: string[], query: string, output_terms?: string[] = terms): [number, string][];
 ```
 
 Examples:
@@ -239,7 +239,7 @@ Declarations:
 FuzzySearch.Scores.NGramCosine(n_gram_counts_tokenized_term: Map<string, number>, n_gram_counts_tokenized_query: Map<string, number>): number;
 
 /**higher - better */
-FuzzySearch.Sorting.NGramCosineSorting(terms: string[], n_gram_count_tokenized_terms: Map<string, number>[], n_gram_count_tokenized_query: Map<string, number>): [number, string][];
+FuzzySearch.Sorting.NGramCosineSorting(output_terms: string[], n_gram_count_tokenized_terms: Map<string, number>[], n_gram_count_tokenized_query: Map<string, number>): [number, string][];
 
 
 //tokenization
@@ -276,7 +276,7 @@ FuzzySearch.Scores.NGramJaccard(n_gram_set_tokenized_term: Set<string>, n_gram_s
 
 
 /**higher - better */
-FuzzySearch.Sorting.NGramJaccard(terms: string[], n_gram_set_tokenized_terms: Set<string>[], n_gram_set_tokenized_query: Set<string>): [number, string][] ;
+FuzzySearch.Sorting.NGramJaccard(output_terms: string[], n_gram_set_tokenized_terms: Set<string>[], n_gram_set_tokenized_query: Set<string>): [number, string][] ;
 
 //tokenization
 const n_gram_counts_tokenized_term = FuzzySearch.Tokenization.NGramSetTokenization(term, n);
