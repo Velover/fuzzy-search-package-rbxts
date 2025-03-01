@@ -2,6 +2,8 @@
 
 A comprehensive package providing fuzzy search algorithms and text processing utilities.
 
+## [NPM](https://www.npmjs.com/package/@rbxts/fuzzy-search) 
+
 ## Namespaces
 
 - **`FuzzySearch.Scores`**: Core implementations of comparison algorithms (raw values)
