@@ -3,18 +3,20 @@
 
 import { Similarities } from "../Similarities";
 
-/**higher - better */
+/**higher - better
+ * @param output_terms if terms were transformed, here could be the original terms
+ */
 export function LevenshteinDistanceSimilaritySorting(
 	terms: string[],
 	query: string,
+	output_terms: string[] = terms,
 ): [number, string][] {
 	return new Array(terms.size(), 0)
 		.map((_, i) => {
-			const term = terms[i];
-			return [Similarities.LevenshteinDistance(term, query), term] as [
-				number,
-				string,
-			];
+			return [
+				Similarities.LevenshteinDistance(terms[i], query),
+				output_terms[i],
+			] as [number, string];
 		})
 		.sort(([a], [b]) => a > b);
 }
