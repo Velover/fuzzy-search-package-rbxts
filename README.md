@@ -79,7 +79,7 @@ FuzzySearch.Sorting.DamerauLevenshteinDistance(terms: string[],	query: string): 
 /**lower - better */
 FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistance(terms: string[],	query: string): [number, string][];
 /**higher - better */
-FuzzySearch.Sorting.DamerauLevenshteinSimilarity(terms: string[],	query: string): [number, string][];
+FuzzySearch.Sorting.DamerauLevenshteinDistanceSimilarity(terms: string[],	query: string): [number, string][];
 /**higher - better */
 FuzzySearch.Sorting.LargeStringsDamerauLevenshteinDistanceSimilarity(terms: string[],	query: string): [number, string][];
 ```

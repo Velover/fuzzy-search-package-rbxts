@@ -4,7 +4,7 @@
 import { Similarities } from "../Similarities";
 
 /**higher - better */
-export function DamerauLevenshteinSimilaritySorting(
+export function DamerauLevenshteinDistanceSimilaritySorting(
 	terms: string[],
 	query: string,
 ): [number, string][] {

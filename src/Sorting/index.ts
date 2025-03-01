@@ -1,6 +1,6 @@
 import { CosineTextSimilaritySorting } from "./CosineTextSimilaritySorting";
+import { DamerauLevenshteinDistanceSimilaritySorting } from "./DamerauLevenshteinDinstanceSimilaritySorting";
 import { DamerauLevenshteinDistanceSorting } from "./DamerauLevenshteinDistanceSorting";
-import { DamerauLevenshteinSimilaritySorting } from "./DamerauLevenshteinSimilaritySorting";
 import { FuzzyScoreSorting } from "./FuzzyScoreSorting";
 import { HammingDistanceSimilaritySorting } from "./HammingDistanceSimilaritySorting";
 import { HammingDistanceSorting } from "./HammingDistanceSorting";
@@ -16,8 +16,8 @@ import { NGramJaccardSorting } from "./NGramJaccardSorting";
 export namespace Sorting {
 	export const CosineTextSimilarity = CosineTextSimilaritySorting;
 	export const DamerauLevenshteinDistance = DamerauLevenshteinDistanceSorting;
-	export const DamerauLevenshteinSimilarity =
-		DamerauLevenshteinSimilaritySorting;
+	export const DamerauLevenshteinDinstanceSimilarity =
+		DamerauLevenshteinDistanceSimilaritySorting;
 	export const FuzzyScore = FuzzyScoreSorting;
 	export const HammingDistanceSimilarity = HammingDistanceSimilaritySorting;
 	export const HammingDistance = HammingDistanceSorting;
