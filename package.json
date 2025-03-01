@@ -4,7 +4,7 @@
 	"author": "Catargo",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Velover/fuzzy-search-package.git"
+		"url": "git+https://github.com/Velover/fuzzy-search-package-rbxts.git"
 	},
 	"main": "out/init.lua",
 	"devDependencies": {
@@ -21,14 +21,14 @@
 		"typescript": "^5.7.3"
 	},
 	"bugs": {
-		"url": "https://github.com/Velover/fuzzy-search-package/issues"
+		"url": "https://github.com/Velover/fuzzy-search-package-rbxts/issues"
 	},
 	"description": "Fuzzy search allows you to find the results even with the spelling mistaces or approximate search words",
 	"files": [
 		"out",
 		"!**/*.tsbuildinfo"
 	],
-	"homepage": "https://github.com/Velover/fuzzy-search-package#readme",
+	"homepage": "https://github.com/Velover/fuzzy-search-package-rbxts#readme",
 	"keywords": [],
 	"license": "MIT",
 	"publishConfig": {
