@@ -3,11 +3,11 @@
 import { Scores } from "../Scores";
 
 /**higher - better */
-export function NGramJaccardSorting(
-	output_terms: string[],
+export function NGramJaccardSorting<T = string>(
+	output_terms: T[],
 	n_gram_set_tokenized_terms: Set<string>[],
 	n_gram_set_tokenized_query: Set<string>,
-): [number, string][] {
+): [number, T][] {
 	return new Array(output_terms.size(), 0)
 		.map((_, i) => {
 			return [
@@ -16,7 +16,7 @@ export function NGramJaccardSorting(
 					n_gram_set_tokenized_query,
 				),
 				output_terms[i],
-			] as [number, string];
+			] as [number, T];
 		})
 		.sort(([a], [b]) => a > b);
 }

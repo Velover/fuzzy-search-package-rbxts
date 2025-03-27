@@ -6,17 +6,17 @@ import { Scores } from "../Scores";
 /**lower - better
  * @param output_terms if terms were transformed, here could be the original terms
  */
-export function DamerauLevenshteinDistanceSorting(
+export function DamerauLevenshteinDistanceSorting<T = string>(
 	terms: string[],
 	query: string,
-	output_terms: string[] = terms,
-): [number, string][] {
+	output_terms: T[] = terms as T[],
+): [number, T][] {
 	return new Array(terms.size(), 0)
 		.map((_, i) => {
 			return [
 				Scores.DamerauLevenshteinDistance(terms[i], query),
 				output_terms[i],
-			] as [number, string];
+			] as [number, T];
 		})
 		.sort(([a], [b]) => a < b);
 }

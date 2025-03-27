@@ -3,11 +3,11 @@
 import { Scores } from "../Scores";
 
 /**higher - better */
-export function NGramCosineSorting(
-	output_terms: string[],
+export function NGramCosineSorting<T = string>(
+	output_terms: T[],
 	n_gram_count_tokenized_terms: Map<string, number>[],
 	n_gram_count_tokenized_query: Map<string, number>,
-): [number, string][] {
+): [number, T][] {
 	return new Array(output_terms.size(), 0)
 		.map((_, i) => {
 			return [
@@ -16,7 +16,7 @@ export function NGramCosineSorting(
 					n_gram_count_tokenized_query,
 				),
 				output_terms[i],
-			] as [number, string];
+			] as [number, T];
 		})
 		.sort(([a], [b]) => a > b);
 }
